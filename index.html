@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <script src="jquery.min.js"></script>
+    <!-- 引入 echarts.js -->
+    <script src="echarts.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+       var myChart = echarts.init(document.getElementById('main'));
+        var img = "/img/qydw_blue.png";
+
+        var uploadedDataURL = "lqy.json";
+
+        var data3 = [
+              {
+        name: '一汽',
+        value: '一级',
+        symbol: 'image:/' + img,
+        
+    },
+    
+             
+         
+]
+
+        var geoCoordMap = {
+    '一汽': [104.2294, 30.5624],
+ } 
+        var convertData = function(data) {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+        var geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+            res.push({
+                name: data[i].name,
+                value: geoCoord.concat(data[i].value),
+                symbol: data[i].symbol,
+            });
+        }
+    }
+    // console.log(res)
+    return res;
+};
+
+         
+       
+ 
+
+        myChart.showLoading();
+        
+$.getJSON(uploadedDataURL, function(geoJson) {
+    
+            echarts.registerMap('maps', geoJson);
+            myChart.hideLoading();
+             
+             option2 = {
+        /* backgroundColor: {
+                 type: 'radial',
+                 x: 0.5,
+                 y: 0.5,
+                 r: 1.3,
+                 colorStops: [{
+                     offset: 0, color: 'red' // 0% 处的颜色
+                 }, {
+                     offset: 1, color: 'blue' // 100% 处的颜色
+                 }],
+                 globalCoord: false // 缺省为 false
+             },*/
+        backgroundColor: '#001685',
+
+        geo: [{
+
+                map: "maps",
+                z: 1,
+                aspectScale: 0.75, //地图的长宽比
+                zoom: 0.9,
+                itemStyle: {
+                    areaColor: 'transparent',
+                    borderColor: '#06efff',
+                    borderWidth: 7
+
+                },
+                emphasis: {
+                    itemStyle: {
+                        borderColor: '#06efff',
+                        borderWidth: 7,
+
+                    },
+                    label: {
+                        show: false
+                    }
+                }
+
+
+            },
+            {
+
+                map: "maps",
+                z: 11,
+                aspectScale: 0.75, //地图的长宽比
+                zoom: 0.9,
+                itemStyle: {
+                    areaColor: 'blue',
+                    // areaColor:'transparent',
+                    borderColor: '#blue',
+                    borderWidth: 1
+
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    itemStyle: {
+                        areaColor: 'blue',
+                        borderColor: '#06efff',
+                        borderWidth: 1,
+
+                    },
+                    label: {
+                        show: false
+                    }
+                }
+
+
+            }
+        ],
+
+     
+
+
+
+    };
+ 
+            
+
+
+
+           
+
+
+              option = {
+        /* backgroundColor: {
+                 type: 'radial',
+                 x: 0.5,
+                 y: 0.5,
+                 r: 1.3,
+                 colorStops: [{
+                     offset: 0, color: 'red' // 0% 处的颜色
+                 }, {
+                     offset: 1, color: 'blue' // 100% 处的颜色
+                 }],
+                 globalCoord: false // 缺省为 false
+             },*/
+        backgroundColor: '#001685',
+
+        geo: [{
+
+                map: "maps",
+                z: 1,
+                aspectScale: 0.75, //地图的长宽比
+                zoom: 0.9,
+                itemStyle: {
+                    areaColor: 'transparent',
+                    borderColor: '#06efff',
+                    borderWidth: 7
+
+                },
+                emphasis: {
+                    itemStyle: {
+                        borderColor: '#06efff',
+                        borderWidth: 7,
+
+                    },
+                    label: {
+                        show: false
+                    }
+                }
+
+
+            },
+            {
+
+                map: "maps",
+                z: 11,
+                aspectScale: 0.75, //地图的长宽比
+                zoom: 0.9,
+                itemStyle: {
+                    areaColor: 'blue',
+                    // areaColor:'transparent',
+                    borderColor: '#blue',
+                    borderWidth: 1
+
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    itemStyle: {
+                        areaColor: 'blue',
+                        borderColor: '#06efff',
+                        borderWidth: 1,
+
+                    },
+                    label: {
+                        show: false
+                    }
+                }
+
+
+            }
+        ],
+
+     
+        
+        series: [  {
+            type: 'scatter',
+            name: "农业",
+
+            coordinateSystem: 'geo',
+            geoIndex: 1,
+            z: 18,
+                      data: convertData(data3),
+            symbolSize: 30,
+
+            symbolKeepAspect: true,
+            itemStyle: {
+                opacity: 1
+            }
+
+        }, ]
+
+
+
+    };
+
+
+
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+       });
+
+
+          
+
+
+        myChart.on('click',function(params){
+	var name = params.name;
+	var seriesType = params.seriesType;
+	console.log(name+"\n"+seriesType);
+ alert(name);	//你的具体逻辑流程
+})
+
+
+
+
+
+
+
+       
+    </script>
+</body>
+</html>
